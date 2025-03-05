@@ -2,15 +2,17 @@ namespace Benchmarks.Serialization;
 
 public record HoldDto
 {
-    public HoldDto(List<int> values)
+    public HoldDto(int field1, string field2)
     {
-        Values = values;
+        Field1 = field1;
+        Field2 = field2;
     }
 
     public static HoldDto CreateFromEntity(Hold hold)
     {
-        return new HoldDto(hold.Values);
+        return new HoldDto(hold.Field1, hold.Field2);
     }
 
-    public List<int> Values { get; init; }
+    public int Field1 { get; init; }
+    public string Field2 { get; init; }
 }

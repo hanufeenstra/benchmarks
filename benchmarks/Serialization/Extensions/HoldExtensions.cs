@@ -4,19 +4,27 @@ public static class HoldExtensions
 {
     public static HoldDto ToDto(this Hold hold) => HoldDto.CreateFromEntity(hold);
 
-    public static List<HoldDto> ToListDto(this List<Hold> holds)
+    public static IEnumerable<HoldDto> ToEnumerableSelect(this IEnumerable<Hold> holds)
     {
-        List<HoldDto> holdsDto = [];
-
-        foreach (var hold in holds)
-        {
-            holdsDto.Add(HoldDto.CreateFromEntity(hold));
-        }
-
-        return holdsDto;
+        return holds.Select(x => new HoldDto(x.Field1, x.Field2));
+    }
+    
+    public static IEnumerable<HoldDto> ToListConvertAllToEnumerable(this List<Hold> holds)
+    {
+        return holds.ConvertAll(x => new HoldDto(x.Field1, x.Field2));
+    }
+    
+    public static List<HoldDto> ToListConvertAllToList(this List<Hold> holds)
+    {
+        return holds.ConvertAll(x => new HoldDto(x.Field1, x.Field2)).ToList();
+    }
+    
+    public static HoldDto[] ToListConvertAllToArray(this List<Hold> holds)
+    {
+        return holds.ConvertAll(x => new HoldDto(x.Field1, x.Field2)).ToArray();
     }
 
-    public static List<HoldDto> ToInitListForeachDto(this List<Hold> holds)
+    public static List<HoldDto> ToInitListForeach(this List<Hold> holds)
     {
         List<HoldDto> holdsDto = new List<HoldDto>(holds.Count);
 
@@ -27,23 +35,14 @@ public static class HoldExtensions
 
         return holdsDto;
     }
-
-    public static List<HoldDto> ToInitListForDto(this List<Hold> holds)
+    
+    public static HoldDto[] ArrayToArraySelect(this Hold[] holds)
     {
-        List<HoldDto> holdsDto = new List<HoldDto>(holds.Count);
-
-        for (int i = 0; i < holds.Count; i++)
-        {
-            holdsDto.Add(HoldDto.CreateFromEntity(holds[i]));
-        }
-        
-        return holdsDto;
+        return holds.Select(HoldDto.CreateFromEntity).ToArray();
     }
-
-    public static List<HoldDto> ToListLinq(this List<Hold> holds)
+    
+    public static IEnumerable<HoldDto> ArrayToEnumerableSelect(this Hold[] holds)
     {
-        List<HoldDto> holdsDto = new List<HoldDto>(holds.Count);
-        holdsDto.AddRange(holds.Select(HoldDto.CreateFromEntity));
-        return holdsDto;
+        return holds.Select(HoldDto.CreateFromEntity);
     }
 }
